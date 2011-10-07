@@ -2,7 +2,7 @@
 #include <iostream>
 
 //additional includes
-#include <fstream> //S.X.-A.3, M.O.-A.1
+#include <fstream> //M.O. A.1, L.C., A2, S.X.-A.3, 
 
 using namespace std;
 
@@ -41,6 +41,7 @@ void Menu::read()
 	//cout << "Read file name then read store data \n";  //S.X.-A.3
 	readRecipeIng();	//M.O.-A.1	//function for read recipe and ingredients
 	readMenuDescr();	//S.X.-A.3  //function for read menu description
+	readOrderOrderItem();//L.C., A2 //function for read orders and order items
 	
 }
 void Menu::show() const 
@@ -97,6 +98,39 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 	}
 	cout << "Read and store recipe successfully \n";  //S.X.-A.3
 }
+
+void Menu::readOrderOrderItem()//L.C., A2
+{
+	char filename[50];
+	int number;			//number of orders
+	int count;			//number of order items
+	int order_id, server_id, table_id; //declares first 3 order elements
+	int y, m, d, h, min; //declares date and time elements
+	int menu_item_id, prod_qty;		//order items elements
+	char seat_id;					//order items elements
+	cin >> filename;
+	std::ifstream in(filename, ios_base::in);	//opens file
+	if (!in.good()){
+		cerr << "Failed to open file.\n";
+	}
+	in >> number;
+	//cout << number;
+	for(int i = 0; i < number; i++){
+		in >> order_id >> server_id >> table_id >> y >> m >> d >> h >> min;
+		orders.push_back(Order(order_id, server_id, table_id, Date(y, m, d), Time(h, min)));	//stores data in vector orders
+		//cout << order_id <<" "<< server_id <<" "<< table_id <<" "<< y <<" "<< m <<" "<< d <<" "<< h <<" "<< min <<" "<<endl;
+		}
+
+	in >> count;
+	//cout << count <<endl;
+	for(int i = 0; i < count; i++){
+		in >> seat_id >> order_id >> menu_item_id >> prod_qty;
+		order_items.push_back(Order_Item(seat_id, order_id, menu_item_id, prod_qty));		//stores data in vector order_items
+		//cout <<seat_id <<" "<< order_id <<" "<< menu_item_id <<" "<< prod_qty<<" "<<endl;
+		}
+
+	in.close();
+	}
 
 void Menu::readMenuDescr() //Author : S.X.-A.3
 {

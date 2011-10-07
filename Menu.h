@@ -13,6 +13,8 @@
 #include "Order.h"
 #include "Order_Item.h"
 #include "Description.h"	//S.X.-A.3
+#include "Time.h" //L.C., A2
+#include "Date.h" //L.C., A2
 
 using namespace std;
 
@@ -39,7 +41,8 @@ public:
 
 private:
    //private data
-	void readRecipeIng(); //M.O.-A.1
+	void readRecipeIng(); //M.O. A.1
+	void readOrderOrderItem(); // L.C., A.2
 	void readMenuDescr(); //S.X.-A.3
 	vector<Category> categories;
 	vector<Menu_Item> menu_items;
