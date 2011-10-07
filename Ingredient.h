@@ -2,6 +2,8 @@
 #define INGREDIENT_H_
 
 #include <string>
+#include <iostream>
+#include <sstream>
 using namespace std;
 
 
