@@ -74,12 +74,14 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 	if (myfile.is_open())
 	{
 		myfile >> ing_count; // read the amount of Ingredients
+		// cout << ing_count <<endl;
 		for(int i = 0; i < ing_count; i++) // iteration according to the amount of category listed
 		{
 			myfile >> ing_id >> recipe_id >> Ingamt >> Ingunits >>Ingname; // read and insert the ingerdients information
 			ingredients.push_back(Ingredient(ing_id,recipe_id,Ingamt,Ingunits,Ingname)); // store the information to the ingredients vector
+			// cout << ing_id << " " << recipe_id << " " << Ingamt << " " << Ingunits << " " << Ingname;
 		}
-		
+		cout << "Read Ingredients SUCCESSFUL";
 		myfile >> recipe_count; // read the amount of Recipes
 		for(int i = 0; i < recipe_count; i++) // iteration according to the amount of recipe listed
 		{
@@ -90,13 +92,14 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 				Ins += compare + " "; // adding the text until stopping point has been found
 				myfile >> compare; // read and insert the instruction
 			}
-			// recipes.push_back(Recipe(recipe_id,chefname,Ins)); // store the information to the recipe vector
+			recipes.push_back(Recipe(recipe_id,chefname,Ins)); // store the information to the recipe vector
+			// Cout << recipe_id << " " << chefname << "\n" << Ins << endl;
 			Ins = ""; // clearing the content to be used again later
 		}
-		
+		cout << "Read Recipe SUCCESSFUL";
 		myfile.close(); // closing the file
 	}
-	cout << "Read and store recipe successfully \n";  //S.X.-A.3
+
 }
 
 void Menu::readOrderOrderItem()//L.C., A2
@@ -108,25 +111,26 @@ void Menu::readOrderOrderItem()//L.C., A2
 	int y, m, d, h, min; //declares date and time elements
 	int menu_item_id, prod_qty;		//order items elements
 	char seat_id;					//order items elements
-	cin >> filename;
-	std::ifstream in(filename, ios_base::in);	//opens file
+	//cin >> filename;
+	std::ifstream in("sample data/orders.dat", ios_base::in);	//opens file
+
 	if (!in.good()){
 		cerr << "Failed to open file.\n";
 	}
 	in >> number;
-	//cout << number;
+	cout << number;
 	for(int i = 0; i < number; i++){
 		in >> order_id >> server_id >> table_id >> y >> m >> d >> h >> min;
-		orders.push_back(Order(order_id, server_id, table_id, Date(y, m, d), Time(h, min)));	//stores data in vector orders
-		//cout << order_id <<" "<< server_id <<" "<< table_id <<" "<< y <<" "<< m <<" "<< d <<" "<< h <<" "<< min <<" "<<endl;
+		orders.push_back(Order(order_id, server_id, table_id, Date(y, m, d), Time(h, min)));	//stores data in vector order
+		// cout << order_id <<" "<< server_id <<" "<< table_id <<" "<< y <<" "<< m <<" "<< d <<" "<< h <<" "<< min <<" "<<endl;
 		}
 
 	in >> count;
-	//cout << count <<endl;
+	cout << count <<endl;
 	for(int i = 0; i < count; i++){
 		in >> seat_id >> order_id >> menu_item_id >> prod_qty;
 		order_items.push_back(Order_Item(seat_id, order_id, menu_item_id, prod_qty));		//stores data in vector order_items
-		//cout <<seat_id <<" "<< order_id <<" "<< menu_item_id <<" "<< prod_qty<<" "<<endl;
+		// cout <<seat_id <<" "<< order_id <<" "<< menu_item_id <<" "<< prod_qty<<" "<<endl;
 		}
 
 	in.close();
