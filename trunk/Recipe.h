@@ -4,14 +4,14 @@
 #include <string>
 
 // other types
-//#include "Instructions.h"				//uncomment once you have added the type definition
+#include "Instructions.h"				//uncomment once you have added the type definition
 using namespace std;
  
 struct Recipe {
 public:
 	// constructors
-	//Recipe (int id, string n, Instructions a)	//uncomment once you have added the type definition
-	//	: recipe_id(id), chef_name(n), instr(a) {}
+	Recipe (int id, string n, Instructions a)	//uncomment once you have added the type definition
+	: recipe_id(id), chef_name(n), instr(a) {}
 
    // utility functions
 	string display() const;
@@ -22,7 +22,7 @@ private:
    // private data
 	int recipe_id;
 	string chef_name;
-	//Instructions instr;			//uncomment once you have added the type definition
+	Instructions instr;			//uncomment once you have added the type definition
 };
 
 

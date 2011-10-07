@@ -10,13 +10,13 @@ using namespace std;
 struct Instructions {
 public:
 	// constructors
-	Instructions(string n);
+	Instructions(string n); //Instruction Constructor M.O. A.1
 
    // utility functions
-	string display() const;
+	string display() const; //Return string consist of instrution informationM.O. A.1
 	
 private:
-	string instructions;
+	string instructions; //Variable contain instruction M.O. A.1
 };
 
 
