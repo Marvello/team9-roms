@@ -13,7 +13,7 @@ public:
 	Instructions(string n); //Instruction Constructor M.O. A.1
 
    // utility functions
-	string display() const; //Return string consist of instrution informationM.O. A.1
+	string display() const; //Return string consist of instrution information M.O. A.1
 	
 private:
 	string instructions; //Variable contain instruction M.O. A.1
