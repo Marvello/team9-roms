@@ -14,9 +14,8 @@ using namespace std;
 int main() {
 	try {
 	   Menu m;
-	   int option;	//Variable to check whether user really want to exit or not
-	   bool exit = false;	//M.O.-A.1
-
+	   int option;
+	   bool exit = false;	////Boolean Variable to check whether user really want to exit M.O. A.1
 	   m.display_main_menu();
 	   do {
 		  cout << "> ";
@@ -58,17 +57,24 @@ int main() {
 			 m.update();
 			 break;
 		  case Menu::Exit:	//Author : M.O.-A.1 //Checking the user input to exit
-			 {
-				char ex;
-				cout<< "Are You Sure? (Y/N)" <<endl;
-				cin>> ex;
-				if ((ex == 'Y') || (ex == 'y'))  
-					exit = true;
+			{
+				char ex; //variable for contain user answer(M.O.)
+				do
+				{
+					cout<< "Are You Sure? (Y/N)" <<endl; //Asking user for input(M.O.)
+					cin>> ex;
+					if ((ex == 'Y') || (ex == 'y'))
+						exit = true; //Change exit value to true and exit the program (M.O.)
+					else if ((ex == 'N') || (ex == 'n')) {}
+					else
+						cerr << "Invalid input; please try again" << endl;
+				}
+				while ((ex != 'Y') && (ex != 'y') && (ex != 'N') && (ex != 'n'));
 				break;
-			 }
+			}
 		  }
 		  
-		  m.display_main_menu();
+		//m.display_main_menu(); Delete because already done at the beginning and doesn't need to be done when exit M.O. A.1
 	   } while (exit == false);		//M.O.-A.1  //Change the loop condition from option!=Menu::Exit to exit==false
 	   return 0;
 	}

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-	Ingredient::Ingredient (int ing_id,int rec_id,float a,string u,string n) 
+	Ingredient::Ingredient (int ing_id,int rec_id,float a,string u,string n)  //Ingredients Constructor M.O. A.1
 	{
 		ingredient_id = ing_id;
 		recipe_id = rec_id;
@@ -15,7 +15,7 @@ using namespace std;
 		name = n;
 	}
 
-	string Ingredient::display() const	//S.X.-A.3
+	string Ingredient::display() const	////Return string consist of Ingredients information M.O. A.1
 	{
 		stringstream  temp;
 		temp << "Ingerdient ID : "  << ingredient_id << "\n" ;

@@ -60,7 +60,7 @@ void Menu::update()
 void Menu::readRecipeIng() //Author : M.O.-A.1
 {
 	//Supporting variables
-	string Ingunits,Ingname, chefname;
+	string Ingunits,Ingname, chefname; 
 	string Ins,compare;
 	int ing_id, recipe_id;
 	int ing_count, recipe_count;

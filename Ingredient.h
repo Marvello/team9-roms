@@ -8,7 +8,7 @@ using namespace std;
 struct Ingredient {
 public:
 	// constructors
-	Ingredient (int ing_id,int rec_id,float a,string u,string n); //M.O.-A.1 //S.X.-A.3
+	Ingredient (int ing_id,int rec_id,float a,string u,string n); //add int ing_id,int rec_id,float a,string u,string n on the constructor M.O. A.1
 
    // utility functions
 	string display() const;
