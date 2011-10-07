@@ -1,8 +1,7 @@
 //Author : M.O.-A.1
 
 #include "Ingredient.h"
-#include <iostream>
-#include <sstream>
+
 
 using namespace std;
 

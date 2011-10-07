@@ -10,6 +10,7 @@
 #include "Menu_Item.h"
 #include "Recipe.h"
 #include "Ingredient.h"
+#include "Instructions.h"
 #include "Order.h"
 #include "Order_Item.h"
 #include "Description.h"	//S.X.-A.3
