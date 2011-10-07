@@ -68,7 +68,7 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 	float Ingamt;
 
 	//Initiation for file reading
-	ifstream myfile ("sample data/recipes.dat");
+	ifstream myfile ("Sample_Data/recipes.dat");
 	
 	//Process for reading the ingredients and recipe
 	if (myfile.is_open())
@@ -81,7 +81,7 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 			ingredients.push_back(Ingredient(ing_id,recipe_id,Ingamt,Ingunits,Ingname)); // store the information to the ingredients vector
 			// cout << ing_id << " " << recipe_id << " " << Ingamt << " " << Ingunits << " " << Ingname;
 		}
-		cout << "Read Ingredients SUCCESSFUL";
+		cout << "Read Ingredients SUCCESSFUL"<<endl;
 		myfile >> recipe_count; // read the amount of Recipes
 		for(int i = 0; i < recipe_count; i++) // iteration according to the amount of recipe listed
 		{
@@ -96,7 +96,7 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 			// Cout << recipe_id << " " << chefname << "\n" << Ins << endl;
 			Ins = ""; // clearing the content to be used again later
 		}
-		cout << "Read Recipe SUCCESSFUL";
+		cout << "Read Recipe SUCCESSFUL"<<endl;
 		myfile.close(); // closing the file
 	}
 
@@ -104,21 +104,23 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 
 void Menu::readOrderOrderItem()//L.C., A2
 {
-	char filename[50];
+	// string filename;
+	char filename[50] ;
 	int number;			//number of orders
 	int count;			//number of order items
 	int order_id, server_id, table_id; //declares first 3 order elements
 	int y, m, d, h, min; //declares date and time elements
 	int menu_item_id, prod_qty;		//order items elements
 	char seat_id;					//order items elements
-	//cin >> filename;
-	std::ifstream in("sample data/orders.dat", ios_base::in);	//opens file
+	cout<< "Enter orders filename :";
+	cin >> filename;
+	std::ifstream in(filename, ios_base::in);	//opens file
 
 	if (!in.good()){
 		cerr << "Failed to open file.\n";
 	}
 	in >> number;
-	cout << number;
+	// cout << number <<endl;
 	for(int i = 0; i < number; i++){
 		in >> order_id >> server_id >> table_id >> y >> m >> d >> h >> min;
 		orders.push_back(Order(order_id, server_id, table_id, Date(y, m, d), Time(h, min)));	//stores data in vector order
@@ -126,7 +128,7 @@ void Menu::readOrderOrderItem()//L.C., A2
 		}
 
 	in >> count;
-	cout << count <<endl;
+	// cout << count <<endl;
 	for(int i = 0; i < count; i++){
 		in >> seat_id >> order_id >> menu_item_id >> prod_qty;
 		order_items.push_back(Order_Item(seat_id, order_id, menu_item_id, prod_qty));		//stores data in vector order_items
@@ -148,7 +150,7 @@ void Menu::readMenuDescr() //Author : S.X.-A.3
 	string desc, word;	// desc = description about the menu
 
 	//Initiation for file reading
-	ifstream file ("sample data/catmenu.dat");
+	ifstream file ("Sample_Data/catmenu.dat");
 
 	//Process for reading the menu category and description
 	if (file.is_open())
