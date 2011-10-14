@@ -47,18 +47,77 @@ void Menu::read()
 
 void Menu::show() const 
 {
-	cout << "Show queries \n";
-	showCatagoryItem();
+	int choice;
+	cout << "Please Select One" << endl;
+	cout << "1. Print a recipe menu "<< endl;
+	cout << "2. Print all menu items sorted by Chef "<< endl;
+	cout << "3. Print all menu items sorted by price"<< endl;
+	cout << "0. exit"<< endl;
+	cout << ">"; 
+	do
+	{
+		cin >> choice;
+		if (not ((1 <= choice) && (choice <= 3)))
+			cout<< "Invalid input" << endl;
+	}
+	while (not((1 <= choice) && (choice <= 3)));
+	
+	if (choice == 1)
+		{}
+	else if (choice ==2)
+		{}
+	else if (choice ==3)
+		showCatagoryItem();
 }
+
 void Menu::find() const 
 {
-	cout << "Find queries \n";
-	findMenuItem();
+	int choice;
+	cout << "Please Select One" << endl;
+	cout << "1. Display Total sales for a table "<< endl;
+	cout << "2. Displat Total sales for a server "<< endl;
+	cout << "3. Display Total sales for a menu item"<< endl;
+	cout << "0. exit"<< endl;
+	cout << ">"; 
+	do
+	{
+		cin >> choice;
+		if (not ((1 <= choice) && (choice <= 3)))
+			cout<< "Invalid input" << endl;
+	}
+	while (not((1 <= choice) && (choice <= 3)));
+	
+	if (choice == 1)
+		{}
+	else if (choice ==2)
+		{}
+	else if (choice ==3)
+		findMenuItem();
 }
+
 void Menu::update()  
 {
-	cout << "Update queries" << endl;
-	updateOrderItem();
+	int choice;
+	cout << "Please Select One" << endl;
+	cout << "1. Add new order item to existing order "<< endl;
+	cout << "2. Add new menu item to category from existing recipe "<< endl;
+	cout << "3. Add new categories"<< endl;
+	cout << "0. exit"<< endl;
+	cout << ">"; 
+	do
+	{
+		cin >> choice;
+		if (not ((1 <= choice) && (choice <= 3)))
+			cout<< "Invalid input" << endl;
+	}
+	while (not((1 <= choice) && (choice <= 3)));
+	
+	if (choice == 1)
+		updateOrderItem();
+	else if (choice ==2)
+		{}
+	else if (choice ==3)
+		{}
 }
 
 void Menu::readRecipeIng() //Author : M.O.-A.1
@@ -185,7 +244,7 @@ void Menu::readMenuDescr() //Author : S.X.-A.3
 	cout << "Read and store menu category and description successfully \n\n";
 }
 
-void Menu::showCatagoryItem() const //Author : M.O. B.3a
+void Menu::showCatagoryItem() const //Author : M.O. B.1c
 {
 	string Catname;
 	int CatID;
@@ -207,13 +266,13 @@ void Menu::showCatagoryItem() const //Author : M.O. B.3a
 	while (found == false); //Repeat entry until the catagory is valid
 	
 
-	for (int i=0;i<menu_items.size();i++)
-		if (menu_items[i].getMenuItemCatID() == CatID)
-			temp.push_back(menu_items[i]);
+	for (int i=0;i<menu_items.size();i++) //For every menu items in vector
+		if (menu_items[i].getMenuItemCatID() == CatID) //if Menu items have same catagory as user input
+			temp.push_back(menu_items[i]); //Save the menu items in temp vector
 
 	Menu_Item swap(0, 0,0, "", 0, Description(""));
 	int iMin,iPos;
-	for (iPos = 0; iPos < temp.size(); iPos++) 
+	for (iPos = 0; iPos < temp.size(); iPos++) //Sort the temp vector
 	{
 		iMin = iPos;
 		for (int i = iPos+1; i < temp.size(); i++) 
@@ -233,7 +292,7 @@ void Menu::showCatagoryItem() const //Author : M.O. B.3a
 	}
 	
 	
-	for (int i=0;i<temp.size();i++)
+	for (int i=0;i<temp.size();i++) //Print Every menu items in temp vector
 	{
 		cout << "Menu Number " << i << " for " << Catname <<endl;
 		cout << "Name : " << temp[i].getMenuItemName() << endl;
@@ -242,7 +301,7 @@ void Menu::showCatagoryItem() const //Author : M.O. B.3a
 	}
 }
 
-void Menu::findMenuItem() const //Author : M.O. B.3a
+void Menu::findMenuItem() const //Author : M.O. B.2c
 {
 	string MenuItemName;
 	int MenuItemID;
@@ -265,10 +324,10 @@ void Menu::findMenuItem() const //Author : M.O. B.3a
 	while (found == false); //Repeat entry until the catagory is valid
 	
 	double sum = 0;
-	for (int i=0; i<order_items.size();i++)
+	for (int i=0; i<order_items.size();i++) //for every items in orders item vector
 	{
-		if (order_items[i].getOrderItemMenuItemID() == MenuItemID)\
-			sum = sum + (order_items[i].getOrderItemProdQty() * MenuItemPrice);
+		if (order_items[i].getOrderItemMenuItemID() == MenuItemID) //if orders item have the same menu item ID
+			sum = sum + (order_items[i].getOrderItemProdQty() * MenuItemPrice); //Sum the price times the quantity
 	}
 	cout << "Total Sales for " << MenuItemName << " are $ " << sum <<endl;
 }

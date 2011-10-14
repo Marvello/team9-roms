@@ -18,12 +18,12 @@ public:
 
    // utility functions
 	string display() const;
-	int getOrderItemMenuItemID() const
+	int getOrderItemMenuItemID() const // M.O. B.2.c
 	{
 		return menu_item_id;
 	}
 	
-	int getOrderItemProdQty() const
+	int getOrderItemProdQty() const // M.O. B.2.c
 	{
 		return prod_qty;
 	}
