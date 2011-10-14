@@ -18,12 +18,12 @@ public:
     // utility functions
 	string display() const;
 	
-	int getCatID() const
+	int getCatID() const // M.O. -B.1c
 	{
 		return cat_id;
 	}
 	
-	string getCatName() const
+	string getCatName() const // M.O. -B.1c
 	{
 		return cat_name;
 	}
@@ -35,6 +35,5 @@ private:
 	int cat_id;
 	string cat_name;
 };
-
 
 #endif //CATEGORY_H_
