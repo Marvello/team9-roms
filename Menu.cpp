@@ -44,18 +44,21 @@ void Menu::read()
 	readOrderOrderItem();//L.C., A2 //function for read orders and order items
 	
 }
+
 void Menu::show() const 
 {
 	cout << "Show queries \n";
-		
+	showCatagoryItem();
 }
 void Menu::find() const 
 {
 	cout << "Find queries \n";
+	findMenuItem();
 }
 void Menu::update()  
 {
-	cout << "Update queries \n";
+	cout << "Update queries" << endl;
+	updateOrderItem();
 }
 
 void Menu::readRecipeIng() //Author : M.O.-A.1
@@ -119,6 +122,7 @@ void Menu::readOrderOrderItem()//L.C., A2
 	if (!in.good()){
 		cerr << "Failed to open file.\n";
 	}
+	
 	in >> number;
 	// cout << number <<endl;
 	for(int i = 0; i < number; i++){
@@ -167,18 +171,146 @@ void Menu::readMenuDescr() //Author : S.X.-A.3
 		{
 			file >> item_id >> cat_id >> rec_id >> item_name >> price;	//read and insert the menu information except description
 			file >> word;	//read and insert the description
-			/*do {
-				desc = word + " ";
-				file >> word;
-			}while (word != "#");*/
+
 			while (word != "#") //read the whole description until "#" found
 			{
 				desc += word + " ";	//adding the text until stopping point has been found
 				file >> word; //read and insert the description
 			}
-			desc = "";	//clearing the content to be used again later
+			menu_items.push_back(Menu_Item(item_id,cat_id,rec_id,item_name,price,Description(desc)));
+			desc = "";	//clearing the content to be used again later			
 		}
 		file.close();	//closing the file
 	}
 	cout << "Read and store menu category and description successfully \n\n";
+}
+
+void Menu::showCatagoryItem() const //Author : M.O. B.3a
+{
+	string Catname;
+	int CatID;
+	bool found = false;
+	vector<Menu_Item> temp;
+	do 
+	{
+		cout << "Please Catagory name :";
+		cin >> Catname; //request for the catagory name
+		for(int i=0;i<categories.size();i++) //For every catagory in the vector 
+			if (categories[i].getCatName()== Catname) //Check if the entry catagory is in the vector
+				{
+					found = true;
+					CatID = categories[i].getCatID(); //Save the catagory ID in variable
+				}
+		if (!found)
+			cout << "Catagory is invalid"<<endl; //Tell User if the catagory is not found
+	}
+	while (found == false); //Repeat entry until the catagory is valid
+	
+
+	for (int i=0;i<menu_items.size();i++)
+		if (menu_items[i].getMenuItemCatID() == CatID)
+			temp.push_back(menu_items[i]);
+
+	Menu_Item swap(0, 0,0, "", 0, Description(""));
+	int iMin,iPos;
+	for (iPos = 0; iPos < temp.size(); iPos++) 
+	{
+		iMin = iPos;
+		for (int i = iPos+1; i < temp.size(); i++) 
+		{
+			if (temp[i].getMenuItemPrice() < temp[iMin].getMenuItemPrice()) 
+			{
+				iMin = i;
+			}
+		}
+ 
+		if ( iMin != iPos ) 
+		{
+			swap = temp[iPos];
+			temp[iPos] = temp[iMin];
+			temp[iMin] = swap;
+		}
+	}
+	
+	
+	for (int i=0;i<temp.size();i++)
+	{
+		cout << "Menu Number " << i << " for " << Catname <<endl;
+		cout << "Name : " << temp[i].getMenuItemName() << endl;
+		cout << "Price : " << temp[i].getMenuItemPrice() << endl;
+		cout << "Description : " << temp[i].getMenuItemDesc() << endl << endl;
+	}
+}
+
+void Menu::findMenuItem() const //Author : M.O. B.3a
+{
+	string MenuItemName;
+	int MenuItemID;
+	double MenuItemPrice;
+	bool found = false;
+	do 
+	{
+		cout << "Please enter Menu Item name :";
+		cin >> MenuItemName; //request for the catagory name
+		for(int i=0;i<menu_items.size();i++) //For every catagory in the vector 
+			if (menu_items[i].getMenuItemName()== MenuItemName) //Check if the entry catagory is in the vector
+				{
+					found = true; 
+					MenuItemID = menu_items[i].getMenuItemID(); //Save the catagory ID in variable
+					MenuItemPrice = menu_items[i].getMenuItemPrice();
+				}
+		if (!found)
+			cout << "Catagory is invalid"<<endl; //Tell User if the catagory is not found
+	}
+	while (found == false); //Repeat entry until the catagory is valid
+	
+	double sum = 0;
+	for (int i=0; i<order_items.size();i++)
+	{
+		if (order_items[i].getOrderItemMenuItemID() == MenuItemID)\
+			sum = sum + (order_items[i].getOrderItemProdQty() * MenuItemPrice);
+	}
+	cout << "Total Sales for " << MenuItemName << " are $ " << sum <<endl;
+}
+
+void Menu::updateOrderItem() //Author : M.O. B.3a
+{
+	int OrdID; //Contain Order ID
+	char SeatID; //Contain Temp Seat ID
+	int MenuItem; //Contain Temp Menu Item
+	int Qty; //Contain Temp Menu Item
+	bool found = false; //For Check user entry
+	do 
+	{
+		cout << "Please Enter Order ID :";
+		cin >> OrdID; //request for the order id
+		for(int i=0;i<orders.size();i++) //For every order in the vector 
+			if (orders[i].getOrdID()== OrdID) //Check if the entry order is on the vector
+				found = true;
+		if (!found) 
+			cout << "Order ID is invalid"<<endl; //Tell User if the order is not found
+	}
+	while (found == false); //Repeat entry until the order id is valid
+		
+	cout << "Enter number of seat : "; 
+	cin >> SeatID; //Request for the seat ID
+	
+	found = false; //Reinitialize boolean found to false
+	do 
+	{
+		cout << "Enter Menu Item : ";
+		cin >> MenuItem; //Request for the Menu Item
+		for(int i=0;i<menu_items.size();i++) //For every menu items in the vector 
+			if (menu_items[i].getMenuItemID() == MenuItem) //Check if the entry menu items is on the vector
+				found = true;
+		if (!found) 
+			cout << "Menu Items is invalid"<<endl; //Tell User if the menu items is not found
+	}
+	while (found == false); //Repeat entry until the order id is valid
+	
+
+	cout << "Enter number of quantity : ";
+	cin >> Qty; //Request for the quantity
+	order_items.push_back(Order_Item(SeatID,OrdID,MenuItem,Qty)); //Push the order item to the vector
+	cout<< "Adding Order item success" << endl;
 }
