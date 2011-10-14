@@ -16,3 +16,29 @@ string Menu_Item::display() const
 	temp << "Menu Description : " << descr.display() << "\n";
 	return temp.str();
 }
+
+int Menu_Item::getMenuItemID() const//Return Menu Item ID M.O. B.3a, B.2c
+{
+	return menu_item_id;
+	
+}
+
+int Menu_Item::getMenuItemCatID() const //Return Menu Item ID M.O. B.3a, B.2c
+{
+	return cat_id;
+}
+
+string Menu_Item::getMenuItemName() const//Return Menu Item Name M.O. B.2c
+{
+	return menu_item_name;
+}
+
+double Menu_Item::getMenuItemPrice() const//Return Menu Item price M.O. B.2c
+{
+	return price;
+}
+
+string Menu_Item::getMenuItemDesc() const //Return Menu Item price M.O. B.1c
+{
+	return descr.display();
+}

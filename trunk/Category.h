@@ -17,6 +17,16 @@ public:
 
     // utility functions
 	string display() const;
+	
+	int getCatID() const
+	{
+		return cat_id;
+	}
+	
+	string getCatName() const
+	{
+		return cat_name;
+	}
 
 private:
    //constants

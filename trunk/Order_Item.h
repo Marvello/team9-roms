@@ -18,6 +18,15 @@ public:
 
    // utility functions
 	string display() const;
+	int getOrderItemMenuItemID() const
+	{
+		return menu_item_id;
+	}
+	
+	int getOrderItemProdQty() const
+	{
+		return prod_qty;
+	}
 
 private:
    //constants  

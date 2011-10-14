@@ -28,6 +28,10 @@ public:
 
    // utility functions
 	string display() const;
+	int getOrdID() // //Return Order ID M.O. B.3a
+	{
+		return order_id;
+	}
 private:
    //constants
 
