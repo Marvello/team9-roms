@@ -45,9 +45,13 @@ private:
 	void readRecipeIng(); //M.O. A.1
 	void readOrderOrderItem(); // L.C., A.2
 	void readMenuDescr(); //S.X.-A.3
+	void showAnItemRecipe() const; // S.X.-B.1a
 	void showCatagoryItem() const; //M.O. B.1c
+	void displayTotalSalesServer() const; //S.X.-B.2b
 	void findMenuItem() const; //M.O. B.2c
 	void updateOrderItem(); //M.O B.3a
+	void updateCategories(); //S.X.-B.3c
+
 	
 	vector<Category> categories;
 	vector<Menu_Item> menu_items;

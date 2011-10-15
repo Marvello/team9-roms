@@ -14,6 +14,11 @@ public:
 
    // utility functions
 	string display() const;
+	int GetIngID() const;		//S.X.-B.1a
+	int GetRecipeID() const;	//S.X.-B.1a
+	float GetAmt() const;		//S.X.-B.1a
+	string GetUnits() const;	//S.X.-B.1a
+	string GetName() const;	//S.X.-B.1a
 
 private:
    //constants  

@@ -18,15 +18,10 @@ public:
 
    // utility functions
 	string display() const;
-	int getOrderItemMenuItemID() const // M.O. B.2.c
-	{
-		return menu_item_id;
-	}
-	
-	int getOrderItemProdQty() const // M.O. B.2.c
-	{
-		return prod_qty;
-	}
+	char getOrderItemSeatID() const; //return Order Seat ID M.O. B.2.c S.X.-B.2b
+	int getOrderItemID() const; //return Order ID M.O. B.2.c S.X.-B.2b
+	int getOrderItemMenuItemID() const; //return Order Item Menu ID M.O. B.2.c S.X.-B.2b
+	int getOrderItemProdQty() const; //return Order Item Menu Quantity ID M.O. B.2.c S.X.-B.2b
 
 private:
    //constants  

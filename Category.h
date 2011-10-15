@@ -18,15 +18,8 @@ public:
     // utility functions
 	string display() const;
 	
-	int getCatID() const // M.O. -B.1c
-	{
-		return cat_id;
-	}
-	
-	string getCatName() const // M.O. -B.1c
-	{
-		return cat_name;
-	}
+	int getCatID() const; //return Catagory ID M.O. -B.1c S.X.-B.1a
+	string getCatName() const; //return Catagory Name M.O. -B.1c S.X.-B.1a
 
 private:
    //constants
