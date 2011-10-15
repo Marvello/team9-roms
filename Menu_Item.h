@@ -16,12 +16,12 @@ public:
 
    // utility functions
 	string display() const;
-	int getMenuItemID() const; //Return Menu Item ID 				M.O. B.3a B.1c	S.X.-B.1a
-	int getMenuItemCatID() const; //Return Menu Item ID 			M.O. B.1c		S.X.-B.1a
-	int getMenuItemRecipeID() const;//Return Menu Item Recipe ID 	M.O. B.1c		S.X.-B.1a
-	string getMenuItemName() const; //Return Menu Item Name 		M.O. B.2c		S.X.-B.1a
-	double getMenuItemPrice() const; //Return Menu Item price 		M.O. B.2c		S.X.-B.1a
-	string getMenuItemDesc() const; //Return Menu Item price 		M.O. B.1c		S.X.-B.1a
+	int getMenuItemID() const; //Return Menu Item ID 				M.O. B.3a B.1c	S.X.-B.1a	LC - B.2a
+	int getMenuItemCatID() const; //Return Menu Item ID 			M.O. B.1c		S.X.-B.1a	LC - B.2a
+	int getMenuItemRecipeID() const;//Return Menu Item Recipe ID 	M.O. B.1c		S.X.-B.1a	LC - B.2a
+	string getMenuItemName() const; //Return Menu Item Name 		M.O. B.2c		S.X.-B.1a	LC - B.2a
+	double getMenuItemPrice() const; //Return Menu Item price 		M.O. B.2c		S.X.-B.1a	LC - B.2a
+	string getMenuItemDesc() const; //Return Menu Item price 		M.O. B.1c		S.X.-B.1a	LC - B.2a
 	
 private:
    //constants

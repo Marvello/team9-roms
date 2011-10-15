@@ -19,9 +19,9 @@ public:
    // utility functions
 	string display() const;
 	char getOrderItemSeatID() const; //return Order Seat ID M.O. B.2.c S.X.-B.2b
-	int getOrderItemID() const; //return Order ID M.O. B.2.c S.X.-B.2b
-	int getOrderItemMenuItemID() const; //return Order Item Menu ID M.O. B.2.c S.X.-B.2b
-	int getOrderItemProdQty() const; //return Order Item Menu Quantity ID M.O. B.2.c S.X.-B.2b
+	int getOrderItemID() const; //return Order ID M.O. B.2.c S.X.-B.2b  LC - B.2a
+	int getOrderItemMenuItemID() const; //return Order Item Menu ID M.O. B.2.c S.X.-B.2b  LC - B.2a
+	int getOrderItemProdQty() const; //return Order Item Menu Quantity ID M.O. B.2.c S.X.-B.2b  LC - B.2a
 
 private:
    //constants  

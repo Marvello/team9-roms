@@ -42,15 +42,18 @@ public:
 
 private:
    //private data
-	void readRecipeIng(); //M.O. A.1
-	void readOrderOrderItem(); // L.C., A.2
-	void readMenuDescr(); //S.X.-A.3
-	void showAnItemRecipe() const; // S.X.-B.1a
-	void showCatagoryItem() const; //M.O. B.1c
-	void displayTotalSalesServer() const; //S.X.-B.2b
-	void findMenuItem() const; //M.O. B.2c
-	void updateOrderItem(); //M.O B.3a
-	void updateCategories(); //S.X.-B.3c
+	void readRecipeIng(); 					//M.O. A.1
+	void readOrderOrderItem(); 				//L.C. A.2
+	void readMenuDescr(); 					//S.X. A.3
+	void showAnItemRecipe() const; 			//S.X. B.1a
+	void showMenuItem() const;				//L.C. B.1b
+	void showCatagoryItem() const; 			//M.O. B.1c
+	void displayTotalSalesTable() const;	//L.C. B.2a
+	void displayTotalSalesServer() const; 	//S.X. B.2b
+	void findMenuItem() const; 				//M.O. B.2c
+	void updateOrderItem(); 				//M.O. B.3a
+	void updateMenuItem();					//L.C. B.3b
+	void updateCategories(); 				//S.X. B.3c
 
 	
 	vector<Category> categories;
