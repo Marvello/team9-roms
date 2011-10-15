@@ -52,7 +52,7 @@ void Menu::show() const
 	cout << "2. Print all menu items sorted by Chef "<< endl;
 	cout << "3. Print all menu items sorted by price"<< endl;
 	cout << "0. exit"<< endl;
-	cout << ">"; 
+	cout << ">>"; 
 	do
 	{
 		cin >> choice;
@@ -64,7 +64,7 @@ void Menu::show() const
 	if (choice == 1)
 		showAnItemRecipe();
 	else if (choice ==2)
-		{}
+		showMenuItem();
 	else if (choice ==3)
 		showCatagoryItem();
 }
@@ -77,7 +77,7 @@ void Menu::find() const
 	cout << "2. Displat Total sales for a server "<< endl;
 	cout << "3. Display Total sales for a menu item"<< endl;
 	cout << "0. exit"<< endl;
-	cout << ">"; 
+	cout << ">>"; 
 	do
 	{
 		cin >> choice;
@@ -87,7 +87,7 @@ void Menu::find() const
 	while (not((1 <= choice) && (choice <= 3)));
 	
 	if (choice == 1)
-		{}
+		displayTotalSalesTable();
 	else if (choice == 2)
 		displayTotalSalesServer();
 	else if (choice == 3)
@@ -102,7 +102,7 @@ void Menu::update()
 	cout << "2. Add new menu item to category from existing recipe "<< endl;
 	cout << "3. Add new categories"<< endl;
 	cout << "0. exit"<< endl;
-	cout << ">"; 
+	cout << ">>"; 
 	do
 	{
 		cin >> choice;
@@ -114,7 +114,7 @@ void Menu::update()
 	if (choice == 1)
 		updateOrderItem();
 	else if (choice ==2)
-		{}
+		updateMenuItem();
 	else if (choice ==3)
 		updateCategories();
 }
@@ -449,10 +449,12 @@ void Menu::displayTotalSalesServer() const	//Author : S.X.-B.2b
 	//Supporting varibles
 	int i, k;
 	int j = 0;
+	int l = 0;
 	int ServerID;
 	int* OrderID = new int[50];
+	int* MenuItemID = new int[50];
 	bool found = false;
-	int totalOrder = 0;
+	double totalOrder = 0;
 
 	cout << "Input server ID : ";
 	cin >> ServerID; //request for the order server ID
@@ -482,12 +484,29 @@ void Menu::displayTotalSalesServer() const	//Author : S.X.-B.2b
 			{
 				if (OrderID[k] == order_items[i].getOrderItemID()) //check if the order id is in the vector
 				{
-					totalOrder++; //add the amount of total order
+					//totalOrder++; //add the amount of total order
+					MenuItemID[l] = order_items[i].getOrderItemMenuItemID();
+					l++;
 				}
 			}
 		}
 	}
-	cout << totalOrder << endl << endl;  //Display total order for the server
+	
+	found = false;
+	for (i=0; i<menu_items.size(); i++)
+	{
+		if(!found)
+		{
+			for (k=0; k<l; k++)
+			{
+				if (MenuItemID[k] == menu_items[i].getMenuItemID())
+				{
+					totalOrder = totalOrder + menu_items[i].getMenuItemPrice();
+				}
+			}
+		}
+	}
+	cout << "$ " << totalOrder << endl << endl;  //Display total order for the server
 }
 
 void Menu::updateCategories()	//Author : S.X.-B.3c
@@ -531,4 +550,128 @@ void Menu::updateCategories()	//Author : S.X.-B.3c
 	}
 	//cout << "success";
 
+}
+
+void Menu::showMenuItem() const
+{
+	cout << "Enter the name of the chef \n";
+	string chefname;
+	int recipe=0;
+	string itemname;
+	double itemprice;
+	string description;
+	cin >> chefname;
+	for(int i=0; i<recipes.size(); i++)
+		{
+		//cout << recipes[i].Get_Chef_Name() << endl;
+		if (chefname==recipes[i].getRecipeChefName())
+			{
+				recipe = recipes[i].getRecipeID();
+				for(int j=0; j<menu_items.size(); j++)
+				{
+					if(recipe==menu_items[j].getMenuItemRecipeID())
+					{
+						cout << menu_items[j].getMenuItemName() << '\t' <<
+							    menu_items[j].getMenuItemPrice() << '\t' <<
+								menu_items[j].getMenuItemDesc() << endl;
+					}
+				}
+			}
+		}
+	//End of Chef Query
+}
+
+void Menu::displayTotalSalesTable() const	//L.C. B.2a
+{
+		//total sales for a given table - B.2a
+	int tablenum = 0;
+	int ordernum = 0;
+	int menuitem = 0;
+	int quant = 0;
+	double itemprice = 0;
+	double sales = 0;
+	int order_id, server_id, table_id; //declares first 3 order elements
+	int y, m, d, h, min; //declares date and time elements
+	int menu_item_id, prod_qty;		//order items elements
+	char seat_id;	//order items elements
+	int tablesales=0;
+	cout << "Please enter Menu Order Table ID :";
+	cin >> tablenum ;
+	for(int i = 0; i<orders.size(); i++)
+		{
+			//tablenum = orders[i].Get_Table_Id();
+		if (tablenum==orders[i].getOrdTableID())
+		{
+		//cout << i;
+		ordernum=orders[i].getOrdID();
+		//cout << ordernum<< "\n";
+		}
+	}
+	for(int j = 0; j<order_items.size(); j++)
+	{
+		if (ordernum==order_items[j].getOrderItemID())
+		{
+			menuitem=order_items[j].getOrderItemMenuItemID();
+			quant=order_items[j].getOrderItemProdQty();
+			//cout << menuitem<< "\n";
+			//cout << quant<< "\n";
+			for (int k =0; k<menu_items.size(); k++)
+			{
+					if(menuitem==menu_items[k].getMenuItemID()) 
+						{
+							itemprice=menu_items[k].getMenuItemPrice();
+					}
+			}
+			//cout << itemprice<< "\n";
+			sales += quant*itemprice;
+		}
+		//cout << menuitem<< "\n";
+		//cout << quant<< "\n";
+	}
+	cout<< sales<< "\n";
+}
+
+void Menu::updateMenuItem()					//L.C. B.3b
+{
+	cout << "Update queries \n";
+	// New Menu Item -L.C., B.3B
+	int cat_option;
+	int cat_id;	//cat_id = category ID
+	int item_id, rec_id;  //item_id = menu item id list, rec_id = recipe ID 
+	string item_name;  //item_name = menu item name,
+	float price;  //price = menu item price
+	string cat_name;	// cat_name = category name
+	string desc, word;	// desc = description about the menu
+	cout << "Enter an existing recipe id: \n";
+	cin >> rec_id;
+	cout << "Choose a Menu Category: \n";
+	cout << "1. Appetizers \n";
+	cout << "2. Entrees \n";
+	cout << "3. Desserts \n";
+	cout << "4. Drinks \n";
+	cin >> cat_option;
+	if (cat_option=1)
+			 cat_id=1010;
+	if (cat_option=2)
+			 cat_id=1901;
+	if (cat_option=3)
+			 cat_id=1576;
+	if (cat_option=4)
+		 cat_id=1320;
+	cout << "Enter a menu item id: \n";
+	cin >> item_id;
+	cout << "Enter a menu item name: \n";
+	cin >> item_name;
+	cout << "Enter a price: \n";
+	cin >> price;
+	cout << "Enter a description followed by '#': \n";
+	cin >> word;	//read and insert the description ---->borrowed from ReadMenuDescr read function (S.X.)
+	while (word != "#") //read the whole description until "#" found
+	{
+		desc += word + " ";	//adding the text until stopping point has been found
+		cin >> word; //read and insert the description
+	}
+	Description description = desc; // initiate description variable
+	desc = "";	//clearing the content to be used again later
+	menu_items.push_back(Menu_Item(item_id, cat_id, rec_id, item_name, price, description));
 }

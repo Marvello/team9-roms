@@ -28,9 +28,9 @@ public:
 
    // utility functions
 	string display() const;
-	int getOrdID() const; // //Return Order ID M.O. B.3a  S.X.-B.2b
+	int getOrdID() const; // //Return Order ID M.O. B.3a  S.X.-B.2b  LC - B.2a
 	int getOrdServerID() const; // //Return Order Server ID M.O. B.3a  S.X.-B.2b
-	int getOrdTableID() const; // //Return Order Table ID M.O. B.3a  S.X.-B.2b
+	int getOrdTableID() const; // //Return Order Table ID M.O. B.3a  S.X.-B.2b  LC - B.2a
 	Date getOrdDate() const; // //Return Order Date M.O. B.3a  S.X.-B.2b
 	Time getOrdTime() const; // //Return Order Time M.O. B.3a  S.X.-B.2b
 

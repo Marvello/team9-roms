@@ -15,9 +15,9 @@ public:
 
    // utility functions
 	string display() const;
-	int getRecipeID() const;		//S.X.-B.1a
-	string getRecipeChefName() const;	//S.X.-B.1a
-	Instructions getRecipeInstr() const;	//S.X.-B.1a
+	int getRecipeID() const;		//S.X.-B.1a  LC, B.1b
+	string getRecipeChefName() const;	//S.X.-B.1a  LC, B.1b
+	Instructions getRecipeInstr() const;	//S.X.-B.1a  LC, B.1b
 	
 private:
    //constants
