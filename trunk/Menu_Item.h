@@ -16,11 +16,12 @@ public:
 
    // utility functions
 	string display() const;
-	int getMenuItemID() const; //Return Menu Item ID M.O. B.3a , B.1c
-	int getMenuItemCatID() const; //Return Menu Item ID M.O. B.1c
-	string getMenuItemName() const; //Return Menu Item Name M.O. B.2c
-	double getMenuItemPrice() const; //Return Menu Item price M.O. B.2c
-	string getMenuItemDesc() const; //Return Menu Item price M.O. B.1c
+	int getMenuItemID() const; //Return Menu Item ID 				M.O. B.3a B.1c	S.X.-B.1a
+	int getMenuItemCatID() const; //Return Menu Item ID 			M.O. B.1c		S.X.-B.1a
+	int getMenuItemRecipeID() const;//Return Menu Item Recipe ID 	M.O. B.1c		S.X.-B.1a
+	string getMenuItemName() const; //Return Menu Item Name 		M.O. B.2c		S.X.-B.1a
+	double getMenuItemPrice() const; //Return Menu Item price 		M.O. B.2c		S.X.-B.1a
+	string getMenuItemDesc() const; //Return Menu Item price 		M.O. B.1c		S.X.-B.1a
 	
 private:
    //constants

@@ -24,3 +24,28 @@ using namespace std;
 		temp << "Name :" << name << "\n";
 		return temp.str();
 	}
+	
+	int Ingredient::GetIngID() const	//Author : S.X.-B.1a
+	{
+		return (ingredient_id);
+	}
+
+	int Ingredient::GetRecipeID() const	//Author : S.X.-B.1a
+	{
+		return (recipe_id);
+	}
+
+	float Ingredient::GetAmt() const	//Author : S.X.-B.1a
+	{
+		return (amt);
+	}
+
+	string Ingredient::GetUnits() const	//Author : S.X.-B.1a
+	{
+		return (units);
+	}
+
+	string Ingredient::GetName() const	//Author : S.X.-B.1a
+	{
+		return (name);
+	}

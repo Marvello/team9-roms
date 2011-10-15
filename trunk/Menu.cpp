@@ -42,7 +42,6 @@ void Menu::read()
 	readRecipeIng();	//M.O.-A.1	//function for read recipe and ingredients
 	readMenuDescr();	//S.X.-A.3  //function for read menu description
 	readOrderOrderItem();//L.C., A2 //function for read orders and order items
-	
 }
 
 void Menu::show() const 
@@ -57,13 +56,13 @@ void Menu::show() const
 	do
 	{
 		cin >> choice;
-		if (not ((1 <= choice) && (choice <= 3)))
+		if (not ((0 <= choice) && (choice <= 3)))
 			cout<< "Invalid input" << endl;
 	}
-	while (not((1 <= choice) && (choice <= 3)));
+	while (not((0 <= choice) && (choice <= 3)));
 	
 	if (choice == 1)
-		{}
+		showAnItemRecipe();
 	else if (choice ==2)
 		{}
 	else if (choice ==3)
@@ -89,9 +88,9 @@ void Menu::find() const
 	
 	if (choice == 1)
 		{}
-	else if (choice ==2)
-		{}
-	else if (choice ==3)
+	else if (choice == 2)
+		displayTotalSalesServer();
+	else if (choice == 3)
 		findMenuItem();
 }
 
@@ -117,7 +116,7 @@ void Menu::update()
 	else if (choice ==2)
 		{}
 	else if (choice ==3)
-		{}
+		updateCategories();
 }
 
 void Menu::readRecipeIng() //Author : M.O.-A.1
@@ -141,7 +140,7 @@ void Menu::readRecipeIng() //Author : M.O.-A.1
 		{
 			myfile >> ing_id >> recipe_id >> Ingamt >> Ingunits >>Ingname; // read and insert the ingerdients information
 			ingredients.push_back(Ingredient(ing_id,recipe_id,Ingamt,Ingunits,Ingname)); // store the information to the ingredients vector
-			// cout << ing_id << " " << recipe_id << " " << Ingamt << " " << Ingunits << " " << Ingname;
+			// cout << ing_id << " " << recipe_id << " " << Ingamt << " " << Ingunits << " " << Ingname <<endl;
 		}
 		cout << "Read Ingredients SUCCESSFUL"<<endl;
 		myfile >> recipe_count; // read the amount of Recipes
@@ -372,4 +371,164 @@ void Menu::updateOrderItem() //Author : M.O. B.3a
 	cin >> Qty; //Request for the quantity
 	order_items.push_back(Order_Item(SeatID,OrdID,MenuItem,Qty)); //Push the order item to the vector
 	cout<< "Adding Order item success" << endl;
+}
+
+void Menu::showAnItemRecipe() const	//Author : S.X.-B.1a
+{
+	//Supporting variables
+	int itemID;
+	int i;
+	string itemName;
+	//Description itemDescr;
+	string ingre;
+	int recipeID;
+	bool found = false;
+
+	//check whether there is empty vectors for vectors that are used
+	if(menu_items.empty() || recipes.empty() || ingredients.empty())
+	{
+		cout << "Please use the read menu first.";
+	}
+	else
+	{
+		cout << "Input a menu item ID : ";
+		cin >> itemID; //request for the menu item ID
+
+		for (i=0; i<menu_items.size(); i++) //itteration in menu_items vector
+		{
+			if (!found) //if it still not found
+			{
+				if (itemID == menu_items[i].getMenuItemID()) //check if the entry menu item is in the vector
+				{
+					found = true;
+					itemName = menu_items[i].getMenuItemName(); //store the menu item name in variable
+					Description itemDescr = menu_items[i].getMenuItemDesc(); //store the menu item description in variable
+					recipeID = menu_items[i].getMenuItemRecipeID(); //store the menu item recipe id in variable
+					cout << itemName << endl << itemDescr.display() << endl << endl; //display the item name and item description
+				}
+			}
+		}
+		
+		if (itemID == 0) //check if the itemID is not in the vector
+		{
+			cout << "Invalid menu item ID";
+		}
+		
+		found = false;
+		cout << "Ingredients : " << endl;
+		for (i=0; i<ingredients.size(); i++) //itteration in ingredients vector
+		{
+				if (recipeID == ingredients[i].GetRecipeID()) //check if the recipe id is in the vector
+				{
+					ingre = ingredients[i].GetName();  //store the menu item ingredients in variable
+					cout << ingre <<endl; //display the item ingredients
+				}
+		}
+		cout << endl;
+			
+		found = false;
+		for (i=0; i<recipes.size(); i++) //itteration in recipes vector
+		{
+			if (!found) //if it still not found
+			{
+				if (recipeID == recipes[i].getRecipeID()) //check if the recipe id is in the vector
+				{
+					found = true;
+					Instructions instruct = recipes[i].getRecipeInstr(); //store the menu item instruction in variable
+					cout << endl <<endl << "Instruction : " << instruct.display() << endl; //display the item instruction
+				}
+			}
+		}
+	}
+	//cout << itemName << endl << itemDescr.display() << endl << endl << ingre << endl << endl << instruct.display();
+
+}
+
+void Menu::displayTotalSalesServer() const	//Author : S.X.-B.2b
+{
+	//Supporting varibles
+	int i, k;
+	int j = 0;
+	int ServerID;
+	int* OrderID = new int[50];
+	bool found = false;
+	int totalOrder = 0;
+
+	cout << "Input server ID : ";
+	cin >> ServerID; //request for the order server ID
+
+	cout << "Total sales in that Server : ";
+	
+	//cout << orders[0].getServerID();
+	for (i=0; i<orders.size(); i++) //itteration in orders vector
+	{
+		if (!found) //if it still not found
+		{
+			if (ServerID == orders[i].getOrdServerID()) //check if the server id is in the vector
+			{
+				OrderID[j] = orders[i].getOrdID(); //store the menu item instruction in array of integer
+				//cout << OrderID[j];
+				j++;
+			}
+		}
+	}
+	
+	found = false;
+	for (i=0; i<order_items.size(); i++) //itteration in order_items vector
+	{
+		if (!found) //if it still not found
+		{
+			for (k=0; k<j; k++)  //itteration in array of integer of OrderID
+			{
+				if (OrderID[k] == order_items[i].getOrderItemID()) //check if the order id is in the vector
+				{
+					totalOrder++; //add the amount of total order
+				}
+			}
+		}
+	}
+	cout << totalOrder << endl << endl;  //Display total order for the server
+}
+
+void Menu::updateCategories()	//Author : S.X.-B.3c
+{
+	//Supporting variable
+	int a;
+	int i;
+	int cat_count_new;
+	int cat_count, cat_id;	//cat_count = amount of category in list, cat_id = category ID
+	string cat_name;	// cat_name = category name
+
+	ifstream file ("Sample_Data/catmenu.dat"); //open database
+
+	if(file.is_open()) //when the file is open
+	{
+		cout << "How many category do you want to add?" << endl; 
+		cin >> a; //request the amount of category that wants to add
+		file >> cat_count; //read the amount of category
+		cat_count_new = cat_count + a; //store the new amount of category
+		
+		for (i=0; i<cat_count; i++) //iteration according to the amount of category listed
+		{
+			file >> cat_id >> cat_name; //read and insert the category id and category name
+			categories.push_back(Category(cat_id, cat_name)); //store the information to the categories vector
+		}
+		
+		for (i=cat_count; i<cat_count_new; i++) //itteration according to the amount of new category
+		{
+			cout << "Category ID : ";
+			cin >> cat_id;
+			cout << "Category Name : ";
+			cin >> cat_name;
+			categories.push_back(Category(cat_id, cat_name)); //store the new category to the categories vector
+		}
+
+		cout << "Adding categories success."<<endl;
+	}
+	else
+	{
+		cout << "File could not be opened successfully.";
+	}
+	//cout << "success";
+
 }
