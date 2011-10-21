@@ -101,15 +101,17 @@ void Menu::update()
 	cout << "1. Add new order item to existing order "<< endl;
 	cout << "2. Add new menu item to category from existing recipe "<< endl;
 	cout << "3. Add new categories"<< endl;
+	cout << "4. Delete Orders"<< endl;
+	cout << "5. Delete menu items from catagory"<< endl;
 	cout << "0. exit"<< endl;
 	cout << ">>"; 
 	do
 	{
 		cin >> choice;
-		if (not ((1 <= choice) && (choice <= 3)))
+		if (not ((1 <= choice) && (choice <= 5)))
 			cout<< "Invalid input" << endl;
 	}
-	while (not((1 <= choice) && (choice <= 3)));
+	while (not((1 <= choice) && (choice <= 5)));
 	
 	if (choice == 1)
 		updateOrderItem();
@@ -117,6 +119,10 @@ void Menu::update()
 		updateMenuItem();
 	else if (choice ==3)
 		updateCategories();
+	else if (choice ==4)
+		deleteOrder();
+	else if (choice ==5)
+		deleteMenuItem();
 }
 
 void Menu::readRecipeIng() //Author : M.O.-A.1
@@ -674,4 +680,172 @@ void Menu::updateMenuItem()					//L.C. B.3b
 	Description description = desc; // initiate description variable
 	desc = "";	//clearing the content to be used again later
 	menu_items.push_back(Menu_Item(item_id, cat_id, rec_id, item_name, price, description));
+}
+
+void Menu::updateRecipe(int RecipeID)					//M.O. C.3f
+{
+	string ChefName;
+	string Ins = "";
+	string temp;
+	bool valid = false;
+	
+	cout<< ">>Please enter Chef Name : ";
+	cin >> ChefName;
+	cout<< ">>Please enter instruction end with # : " << endl;
+	do 
+	{
+		cin >> temp;
+		Ins = Ins + " " + temp;
+	}
+	while (Ins.at(Ins.length()-1)== '#');
+	recipes.push_back(Recipe(RecipeID,ChefName,Instructions(Ins)));
+}
+
+void Menu::updateMenuItem2()				//M.O. C.3f
+{
+	cout << "Update Menu Items" << endl;
+	int MItemID;
+	int CatID;
+	int RecID;
+	string MItemName;
+	double Price;
+	string descr,temp;
+	
+	cout<< ">>Please enter menu item ID : ";
+	cin >> MItemID;
+	cout<< "Catagories";
+	for(int i=1; i =categories.size();i++)
+		cout << i << ". " << categories[i-1].getCatID() << "\t"	 <<categories[i-1].getCatName() << endl;
+	cout << ">>Please enter catagory ID : ";
+	cin >> CatID;
+	cout << ">>Please enter Recipe ID : ";
+	cin >> RecID;
+	updateRecipe(RecID);
+	cout << ">>Please enter menu item name : ";
+	getline (cin,MItemName);
+	cout << ">>Please enter menu item price : ";
+	cin >> Price;
+	cout<< ">>Please enter description end with # : " << endl;
+	do 
+	{
+		cin >> temp;
+		descr = descr + " " + temp;
+	}
+	while (descr.at(descr.length()-1)== '#');
+	menu_items.push_back(Menu_Item(MItemID,CatID,RecID,MItemName,Price,Description(descr)));
+}
+
+void Menu::updateOrder()						//M.O. C.3e
+{
+	int ServerID;
+	int TableID;
+	int DateDD, DateMM, DateYY; 
+	int TimeHH, TimeMM;
+	bool valid = false;
+	
+	cout<< ">>Add Order" << endl;
+	cout<< ">>Please enter server ID : ";
+	cin >> ServerID;
+	cout<< ">>Please enter table ID : ";
+	cin >> TableID;
+	do 
+	{
+		cout<< ">>Please enter date seperate by space(DD MM YY) : ";
+		cin >> DateDD >> DateMM >>DateYY;
+		if ((1 <= DateDD) and (DateDD <= 31) and (1 <= DateMM) and (DateMM<= 12))
+			valid = true;
+		else 
+			cout << ">>Date is invalid. Please try again" <<endl;
+	}
+	while (!valid); 
+	valid = false;
+	do 
+	{
+	cout<< ">>Please enter time seperate by space(HH MM) : ";
+	cin >> TimeHH >> TimeMM;
+		if ((0 <= TimeHH) and (TimeHH <= 23) and (0 <= TimeMM) and (TimeMM<= 59))
+			valid = true;
+		else 
+			cout << ">>Time is invalid. Please try again" <<endl;
+	}
+	while (!valid);
+
+	valid = false;
+	int OrdID = 1;
+	while (!valid)
+	{
+		int i=0;
+		while ((i<orders.size()) and (OrdID==orders[i].getOrdID()))
+		{
+			++i;
+		}
+		
+		if (i >= orders.size())
+			valid = true;
+		else
+			++OrdID;
+	}
+	
+	orders.push_back(Order(OrdID,ServerID,TableID,Date(DateDD,DateMM,DateYY),Time(TimeHH,TimeMM)));
+	cout << ">>NEW order added"<<endl;
+}
+
+void Menu::deleteOrder()						//M.O. C.3
+{
+	int OrdID;
+	bool found = false;
+	cout << "Delete Order Query"<<endl;
+	cout << "Please enter Order ID : ";
+	cin >> OrdID;
+	vector<Order>::iterator tempIterator;
+	vector<Order>::iterator idx;
+
+	for (tempIterator = orders.begin() ;tempIterator !=orders.end() ;++tempIterator)
+		if ((*tempIterator).getOrdID() == OrdID){
+			idx = tempIterator;
+			found = true;
+		}
+
+	if (found) 
+		{
+			cout << orders.size();
+			orders.erase(idx);
+			cout << orders.size();
+			cout<< OrdID << " is successfully deleted." <<endl;
+		}
+	else
+		cout << "Order ID " << OrdID << " not found" <<endl;
+}
+
+void Menu::deleteMenuItem()					//M.O. C.3
+{
+	int MenuItemID, CatagoryID;
+	bool found = false;
+	cout << "Delete Menu Item from Catagory Query"<<endl;
+	cout << "Please enter Menu Item ID";
+	cin >> MenuItemID;
+	cout << "Please enter Catagory ID";
+	cin >> CatagoryID;
+	vector<Menu_Item>::iterator tempIterator;
+	vector<Menu_Item>::iterator idx;
+
+	
+	for (tempIterator = menu_items.begin() ;tempIterator !=menu_items.end() ;++tempIterator)
+	{
+		if (((*tempIterator).getMenuItemID() != MenuItemID) and ((*tempIterator).getMenuItemCatID() != CatagoryID)) {
+			idx = tempIterator;
+			found = true;
+			}
+		++tempIterator;
+	}
+	
+	if (found) 
+		{
+			menu_items.size();
+			menu_items.erase(idx);
+			menu_items.size();
+			cout<< "Menu item with ID " << MenuItemID << "from catagory ID " << CatagoryID << " is successfully deleted." <<endl;
+		}
+	else
+		cout << "Menu Item ID " << MenuItemID << " from catagory " << CatagoryID << " not found" <<endl;
 }

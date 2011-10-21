@@ -5,6 +5,7 @@
 #include <string>
 #include <stdexcept>
 #include <vector>
+#include <algorithm>
 //other types
 #include "Category.h"
 #include "Menu_Item.h"
@@ -54,7 +55,11 @@ private:
 	void updateOrderItem(); 				//M.O. B.3a
 	void updateMenuItem();					//L.C. B.3b
 	void updateCategories(); 				//S.X. B.3c
-
+	void updateOrder();						//M.O. C.3e
+	void updateRecipe(int RecipeID);		//M.O. C.3f
+	void updateMenuItem2();					//M.O. C.3f
+	void deleteOrder();						//M.O. C.3
+	void deleteMenuItem();					//M.O. C.3
 	
 	vector<Category> categories;
 	vector<Menu_Item> menu_items;
