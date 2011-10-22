@@ -682,170 +682,293 @@ void Menu::updateMenuItem()					//L.C. B.3b
 	menu_items.push_back(Menu_Item(item_id, cat_id, rec_id, item_name, price, description));
 }
 
-void Menu::updateRecipe(int RecipeID)					//M.O. C.3f
+void Menu::displayTop5MenuItems() const 	//L.C., C.2-c
 {
-	string ChefName;
-	string Ins = "";
+	int quant=0;	
+	double price;
+	int menuitem;
+	double revenue;
+	vector<double> itemrevenues;
+	for (int i=0; i<menu_items.size();i++)    //finds menu items for every order and the amount spent on each menu item, then adds them together
+	{
+		quant=0;
+		price = menu_items[i].getMenuItemPrice();
+		//cout << price << endl;
+		menuitem = menu_items[i].getMenuItemID();
+		for (int j=0; j<orders.size();j++)
+		{
+			if (menuitem == order_items[j].getOrderItemMenuItemID())
+			{
+				quant += order_items[j].getOrderItemProdQty(); //adds quantity for each order
+			}
+		}
+		//cout << quant << endl;
+		revenue = price*quant;
+		//cout << revenue << endl;
+		itemrevenues.push_back(revenue);  //vector containing the revenues from each menu item
+	}
+	double maxrevenue;
+	vector<double>tempitemrevenues = itemrevenues;
+	vector<int> positions;
+	maxrevenue=tempitemrevenues[0];
+	int position = 0;
+	//cout << "Positions: \n";
+	for (int j=0; j<itemrevenues.size(); j++) //sorts item revenues and keeps track of their positions
+	{
+		for (int i=0; i<itemrevenues.size(); i++) //finds current maximum revenue and its position in itemrevenues
+		{
+			if (tempitemrevenues[i]>=maxrevenue)
+			{
+				maxrevenue=tempitemrevenues[i];
+				position = i;
+			}
+		}
+		maxrevenue=-1;
+		tempitemrevenues[position]=0; //once position i is found, the revenue in that position is set to 0 in tempitemrevenues order to find the position for the next highest revenue
+		//cout << position << endl;
+		positions.push_back(position);
+	}
+	int top1, top2, top3, top4, top5;
+	top1 = positions[0]; //position in itemrevenues with menu item of highest revenue
+	top2 = positions[1];
+	top3 = positions[2];
+	top4 = positions[3];
+	top5 = positions[4];
+	cout << "Top 5 Selling Menu Items by Revenue \n";
+	cout << menu_items[top1].getMenuItemName() << " $" << itemrevenues[top1] <<endl; //positions[0]
+	cout << menu_items[top2].getMenuItemName() << " $" << itemrevenues[top2] <<endl;//positions[1]
+	cout << menu_items[top3].getMenuItemName() << " $" << itemrevenues[top3] <<endl; //positions[2]
+	cout << menu_items[top4].getMenuItemName() << " $" << itemrevenues[top4] <<endl; //positions[3]
+	cout << menu_items[top5].getMenuItemName() << " $" << itemrevenues[top5] <<endl; //positions[4]
+}
+
+void Menu::displayTopOrderTabPrice() const 	//L.C., C.2-d
+{
+	int quant=0;
+	double price=0; 
+	double tabprice=0;
+	int menuitem;
+	int orderid;
+	vector<double> tabprices;
+	for (int i=0; i<order_items.size();i++) //finds tab prices for each order
+	{
+		tabprice=0;
+		orderid = order_items[i].getOrderItemID();
+		for (int j=0; j<order_items.size(); j++)
+		{
+			if(orderid == order_items[j].getOrderItemID())
+			{
+				quant = order_items[j].getOrderItemProdQty(); //finds quantity of order item in an order
+				menuitem = order_items[j].getOrderItemMenuItemID(); //finds the menu item ordered
+				for(int k=0; k<menu_items.size(); k++)
+				{
+					if(menuitem == menu_items[k].getMenuItemID())
+						price = menu_items[k].getMenuItemPrice();  //finds the price of the menu item ordered
+				}
+				tabprice += quant*price; //adds on amount spent for each menu item ordered
+				quant = 0;   //reset quant and price to 0 before running loop again
+				price = 0;
+				//cout << menuitem << endl;
+				//cout << tabprice << endl;
+			}
+		}
+		//cout << orderid << endl;
+		//cout << tabprice << endl;
+		tabprices.push_back(tabprice);
+	}
+
+	double maxtabprice;
+	vector<double>temptabprices = tabprices;
+	vector<int> positions;
+	maxtabprice=temptabprices[0];
+	int position = 0;
+	//cout << "Positions: \n";
+	for (int j=0; j<tabprices.size(); j++) //sorts order tab prices and keeps track of their positions
+	{
+		for (int i=0; i<tabprices.size(); i++)
+		{
+			if (temptabprices[i]>=maxtabprice)	//once position i is found, the tab price in that position is set to 0 in temptabprices order to find the position for the next highest tab price
+			{
+				maxtabprice=temptabprices[i];
+				position = i;
+			}
+		}
+		maxtabprice=-1;
+		temptabprices[position]=0;
+		//cout << position << endl;
+		positions.push_back(position);
+	}
+	int top1;
+	top1 = positions[0];	//position in tab prices with order of highest revenue
+	cout << "Order with largest tab price: \n";
+	cout << order_items[top1].getOrderItemID() << " $" << tabprices[top1] <<endl; //positions[0]
+}
+
+void Menu::updateRecipe(int RecipeID)		//M.O. C.3f
+{
+	string ChefName;  //Variable that contain user entry Chef Name
+	string Ins = ""; //Variable that contain user entry Instruction
 	string temp;
 	bool valid = false;
 	
-	cout<< ">>Please enter Chef Name : ";
-	cin >> ChefName;
+	cout<< ">>Please enter Chef Name : "; 
+	cin >> ChefName; //Request for user entry
 	cout<< ">>Please enter instruction end with # : " << endl;
-	do 
+	do //While Instruction don't end with #
 	{
-		cin >> temp;
+		cin >> temp; //request for user entry Instruction
 		Ins = Ins + " " + temp;
 	}
 	while (Ins.at(Ins.length()-1)== '#');
-	recipes.push_back(Recipe(RecipeID,ChefName,Instructions(Ins)));
+	recipes.push_back(Recipe(RecipeID,ChefName,Instructions(Ins))); //Insert Recipe to Recipes vector
 }
 
 void Menu::updateMenuItem2()				//M.O. C.3f
 {
 	cout << "Update Menu Items" << endl;
-	int MItemID;
-	int CatID;
-	int RecID;
-	string MItemName;
-	double Price;
-	string descr,temp;
+	int MItemID; //Variable that contain user entry Menu Item ID
+	int CatID; //Variable that contain user entry Catagory ID
+	int RecID; //Variable that contain user entry Recipe ID
+	string MItemName; //Variable that contain user entry Menu Item Name
+	double Price; //Variable that contain user entry MEnu Item Price
+	string descr,temp; //Variable that contain user entry Description
 	
 	cout<< ">>Please enter menu item ID : ";
-	cin >> MItemID;
+	cin >> MItemID; //request for MEnu Item ID
 	cout<< "Catagories";
 	for(int i=1; i =categories.size();i++)
-		cout << i << ". " << categories[i-1].getCatID() << "\t"	 <<categories[i-1].getCatName() << endl;
+		cout << i << ". " << categories[i-1].getCatID() << "\t"	 <<categories[i-1].getCatName() << endl; //Show all possible catagory
 	cout << ">>Please enter catagory ID : ";
-	cin >> CatID;
+	cin >> CatID; //request for user entry catagory ID
 	cout << ">>Please enter Recipe ID : ";
-	cin >> RecID;
-	updateRecipe(RecID);
-	cout << ">>Please enter menu item name : ";
-	getline (cin,MItemName);
+	cin >> RecID; //request for user entry recipe ID
+	updateRecipe(RecID); //Call the procedure Update Recipe to add new recipe
+	cout << ">>Please enter menu item name : "; 
+	getline (cin,MItemName); ////request for user entry Menu Item Name
 	cout << ">>Please enter menu item price : ";
-	cin >> Price;
+	cin >> Price; //request for user entry Menu Item Price
 	cout<< ">>Please enter description end with # : " << endl;
 	do 
 	{
-		cin >> temp;
-		descr = descr + " " + temp;
+		cin >> temp; //request for user entry Description into temp description
+		descr = descr + " " + temp; //Adding Description with the temp description
 	}
-	while (descr.at(descr.length()-1)== '#');
-	menu_items.push_back(Menu_Item(MItemID,CatID,RecID,MItemName,Price,Description(descr)));
+	while (descr.at(descr.length()-1)== '#'); // while the description not end by '#'
+	menu_items.push_back(Menu_Item(MItemID,CatID,RecID,MItemName,Price,Description(descr))); //Insert the MEnu Item into vector
+	cout << "Menu Item has successfully Added" <<endl;
 }
 
-void Menu::updateOrder()						//M.O. C.3e
+void Menu::updateOrder()					//M.O. C.3e
 {
-	int ServerID;
-	int TableID;
-	int DateDD, DateMM, DateYY; 
-	int TimeHH, TimeMM;
-	bool valid = false;
+	int ServerID;  //Variable that contain user entry Server ID
+	int TableID; //Variable that contain user entry Table ID
+	int DateDD, DateMM, DateYY;  //Variable that contain user entry Date
+	int TimeHH, TimeMM; //Variable that contain user entry Time
+	bool valid = false; //Variable used to check whether the user entry valid or not
 	
 	cout<< ">>Add Order" << endl;
 	cout<< ">>Please enter server ID : ";
-	cin >> ServerID;
+	cin >> ServerID; //request for user entry Server ID
 	cout<< ">>Please enter table ID : ";
-	cin >> TableID;
+	cin >> TableID; //request for user entry Table ID
 	do 
 	{
 		cout<< ">>Please enter date seperate by space(DD MM YY) : ";
-		cin >> DateDD >> DateMM >>DateYY;
-		if ((1 <= DateDD) and (DateDD <= 31) and (1 <= DateMM) and (DateMM<= 12))
+		cin >> DateDD >> DateMM >>DateYY; //request for user entry Date
+		if ((1 <= DateDD) and (DateDD <= 31) and (1 <= DateMM) and (DateMM<= 12)) //Check is the Date valid
 			valid = true;
 		else 
 			cout << ">>Date is invalid. Please try again" <<endl;
 	}
-	while (!valid); 
+	while (!valid);  //while the date is invalid
 	valid = false;
 	do 
 	{
 	cout<< ">>Please enter time seperate by space(HH MM) : ";
-	cin >> TimeHH >> TimeMM;
-		if ((0 <= TimeHH) and (TimeHH <= 23) and (0 <= TimeMM) and (TimeMM<= 59))
+	cin >> TimeHH >> TimeMM; //request for user entry Time
+		if ((0 <= TimeHH) and (TimeHH <= 23) and (0 <= TimeMM) and (TimeMM<= 59))//Check is the Time Valid
 			valid = true;
 		else 
 			cout << ">>Time is invalid. Please try again" <<endl;
 	}
-	while (!valid);
+	while (!valid);  //while the time is invalid
 
 	valid = false;
 	int OrdID = 1;
 	while (!valid)
 	{
 		int i=0;
-		while ((i<orders.size()) and (OrdID==orders[i].getOrdID()))
+		while ((i<orders.size()) and (OrdID==orders[i].getOrdID())) //find Order ID that haven't been used
 		{
-			++i;
+			++i; //increment i
 		}
 		
-		if (i >= orders.size())
-			valid = true;
-		else
-			++OrdID;
+		if (i >= orders.size()) //if order id Haven't been used
+			valid = true; //then order id is valid
+		else //else
+			++OrdID; //Increment Order ID
 	}
 	
-	orders.push_back(Order(OrdID,ServerID,TableID,Date(DateDD,DateMM,DateYY),Time(TimeHH,TimeMM)));
+	orders.push_back(Order(OrdID,ServerID,TableID,Date(DateDD,DateMM,DateYY),Time(TimeHH,TimeMM))); //Added the new Order into vector
 	cout << ">>NEW order added"<<endl;
 }
 
-void Menu::deleteOrder()						//M.O. C.3
+void Menu::deleteOrder()					//M.O. C.3
 {
-	int OrdID;
-	bool found = false;
+	int OrdID;   //Variable that contain user entry Order ID ID
+	bool found = false; //Variable to check whether Order ID exist
+	vector<Order>::iterator tempIterator;  //Variable to iterate the vector
+	vector<Order>::iterator idx; //Variable contain Order ID posisition
+
 	cout << "Delete Order Query"<<endl;
 	cout << "Please enter Order ID : ";
-	cin >> OrdID;
-	vector<Order>::iterator tempIterator;
-	vector<Order>::iterator idx;
+	cin >> OrdID;  //Request for user entry order ID
 
-	for (tempIterator = orders.begin() ;tempIterator !=orders.end() ;++tempIterator)
-		if ((*tempIterator).getOrdID() == OrdID){
-			idx = tempIterator;
-			found = true;
+	for (tempIterator = orders.begin() ;tempIterator !=orders.end() ;++tempIterator) //For every element inside the vector
+		if ((*tempIterator).getOrdID() == OrdID){ //If The Order ID is the same with user entry
+			idx = tempIterator; //Save the position to idx
+			found = true; //And found == true
 		}
 
-	if (found) 
+	if (found) //if Posisition found
 		{
-			cout << orders.size();
-			orders.erase(idx);
-			cout << orders.size();
+			// cout << orders.size(); //for Debugging purpose
+			orders.erase(idx); //Erase the order ID index idx
+			// cout << orders.size(); //for Debugging purpose
 			cout<< OrdID << " is successfully deleted." <<endl;
 		}
-	else
-		cout << "Order ID " << OrdID << " not found" <<endl;
+	else //if not found
+		cout << "Order ID " << OrdID << " not found" <<endl; //tell the user order id not found
 }
 
 void Menu::deleteMenuItem()					//M.O. C.3
 {
-	int MenuItemID, CatagoryID;
-	bool found = false;
+	int MenuItemID, CatagoryID; //Variable that contain user entry Menu Item ID  and catagory ID
+	bool found = false; //Variable to check whether Order ID exist
+	vector<Menu_Item>::iterator tempIterator;//Variable to iterate the vector
+	vector<Menu_Item>::iterator idx;//Variable contain Order ID posisition
+
 	cout << "Delete Menu Item from Catagory Query"<<endl;
 	cout << "Please enter Menu Item ID";
-	cin >> MenuItemID;
+	cin >> MenuItemID;//Request for user entry menu item ID
 	cout << "Please enter Catagory ID";
-	cin >> CatagoryID;
-	vector<Menu_Item>::iterator tempIterator;
-	vector<Menu_Item>::iterator idx;
-
+	cin >> CatagoryID;//Request for user entry catagory ID
 	
-	for (tempIterator = menu_items.begin() ;tempIterator !=menu_items.end() ;++tempIterator)
+	for (tempIterator = menu_items.begin() ;tempIterator !=menu_items.end() ;++tempIterator) //For every element inside the vector
 	{
-		if (((*tempIterator).getMenuItemID() != MenuItemID) and ((*tempIterator).getMenuItemCatID() != CatagoryID)) {
-			idx = tempIterator;
-			found = true;
-			}
-		++tempIterator;
+		if (((*tempIterator).getMenuItemID() != MenuItemID) and ((*tempIterator).getMenuItemCatID() != CatagoryID)) {//If The menu item ID and catagory ID is the same with user entry 
+			idx = tempIterator;//Save the position to idx
+			found = true;//And found == true
+		}
 	}
 	
-	if (found) 
+	if (found) //if Posisition found
 		{
-			menu_items.size();
-			menu_items.erase(idx);
-			menu_items.size();
+			// menu_items.size(); //for Debugging purpose
+			menu_items.erase(idx); //Erase the menu item in index idx
+			// menu_items.size(); //for Debugging purpose
 			cout<< "Menu item with ID " << MenuItemID << "from catagory ID " << CatagoryID << " is successfully deleted." <<endl;
 		}
-	else
-		cout << "Menu Item ID " << MenuItemID << " from catagory " << CatagoryID << " not found" <<endl;
+	else //if Posisition not found
+		cout << "Menu Item ID " << MenuItemID << " from catagory " << CatagoryID << " not found" <<endl; //tell the user order id not found
 }
