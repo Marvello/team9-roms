@@ -55,6 +55,8 @@ private:
 	void updateOrderItem(); 				//M.O. B.3a
 	void updateMenuItem();					//L.C. B.3b
 	void updateCategories(); 				//S.X. B.3c
+	void displayTop5MenuItems() const;		//L.C. C.2c
+	void displayTopOrderTabPrice() const;	//L.C. C.2d
 	void updateOrder();						//M.O. C.3e
 	void updateRecipe(int RecipeID);		//M.O. C.3f
 	void updateMenuItem2();					//M.O. C.3f
