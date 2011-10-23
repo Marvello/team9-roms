@@ -51,15 +51,17 @@ void Menu::show() const
 	cout << "1. Print a recipe menu "<< endl;
 	cout << "2. Print all menu items sorted by Chef "<< endl;
 	cout << "3. Print all menu items sorted by price"<< endl;
+	cout << "4. Print all order IDs and the tab price sorted by date" << endl;
+	cout << "5. Print all menu item in a given order by price" << endl;
 	cout << "0. exit"<< endl;
 	cout << ">>"; 
 	do
 	{
 		cin >> choice;
-		if (not ((0 <= choice) && (choice <= 3)))
+		if (not ((0 <= choice) && (choice <= 5)))
 			cout<< "Invalid input" << endl;
 	}
-	while (not((0 <= choice) && (choice <= 3)));
+	while (not((0 <= choice) && (choice <= 5)));
 	
 	if (choice == 1)
 		showAnItemRecipe();
@@ -67,6 +69,10 @@ void Menu::show() const
 		showMenuItem();
 	else if (choice ==3)
 		showCatagoryItem();
+	else if (choice ==4)
+		ListOrderByDate();
+	else if (choice ==5)
+		ListItemByPrice();
 }
 
 void Menu::find() const 
@@ -76,15 +82,17 @@ void Menu::find() const
 	cout << "1. Display Total sales for a table "<< endl;
 	cout << "2. Displat Total sales for a server "<< endl;
 	cout << "3. Display Total sales for a menu item"<< endl;
+	cout << "4. Display the top five selling menu items by revenue regardless of category"<< endl;//LC - C.2(c)
+	cout << "5. Display the order with the largest tab price"<< endl;//LC - C.2(c)
 	cout << "0. exit"<< endl;
 	cout << ">>"; 
 	do
 	{
 		cin >> choice;
-		if (not ((1 <= choice) && (choice <= 3)))
+		if (not ((1 <= choice) && (choice <= 5)))
 			cout<< "Invalid input" << endl;
 	}
-	while (not((1 <= choice) && (choice <= 3)));
+	while (not((1 <= choice) && (choice <=5))); //3 changed to 5, LC
 	
 	if (choice == 1)
 		displayTotalSalesTable();
@@ -92,6 +100,10 @@ void Menu::find() const
 		displayTotalSalesServer();
 	else if (choice == 3)
 		findMenuItem();
+	else if (choice == 4)     //LC - C.2(c)
+		displayTop5MenuItems();
+	else if (choice == 5)	//LC - C.2(c)
+		displayTopOrderTabPrice();
 }
 
 void Menu::update()  
@@ -457,8 +469,8 @@ void Menu::displayTotalSalesServer() const	//Author : S.X.-B.2b
 	int j = 0;
 	int l = 0;
 	int ServerID;
-	int* OrderID = new int[50];
-	int* MenuItemID = new int[50];
+	int* OrderID = new int[100];
+	int* MenuItemID = new int[100];
 	bool found = false;
 	double totalOrder = 0;
 
@@ -680,6 +692,180 @@ void Menu::updateMenuItem()					//L.C. B.3b
 	Description description = desc; // initiate description variable
 	desc = "";	//clearing the content to be used again later
 	menu_items.push_back(Menu_Item(item_id, cat_id, rec_id, item_name, price, description));
+}
+
+void Menu::ListOrderByDate() const			//S.X. - C.1a
+{
+	//vector<Date> OrderDate;
+	//vector<int> OrderID;
+	int* OrderID = new int[100];
+	Date* OrderDate = new Date[100];
+	double* OrderPrice = new double[100];
+	int* MenuItemID = new int[100];
+	double* ItemPrice = new double[100];
+	int temp;
+	Date temp2;
+	double temp3;
+	int f=0;
+	int g=0;
+	int k=0;
+	int p =0;
+	double Price;
+	bool before = false;
+	int MenuItem;
+	//int y, m, d;
+	
+	for (int i=0; i<orders.size(); i++)
+	{
+		OrderID[f] = orders[f].getOrdID();
+		OrderDate[f] = orders[f].getOrdDate();
+		/*for (int j=0; j<order_items.size(); j++)	//find the same menu item id in order item vector
+		{
+			if (OrderID[f] == order_items[j].getOrderItemID())
+			{
+				MenuItemID[k] = order_items[j].getOrderItemMenuItemID();
+				//cout << MenuItemID[k] << endl;
+				for (int m=0; m<menu_items.size(); m++)
+				{
+					if (MenuItemID[k] == menu_items[m].getMenuItemID())
+					{
+						Price = Price + menu_items[m].getMenuItemPrice();
+						//cout << Price << endl;
+					}
+				}
+				
+			}
+			//ItemPrice[k] = Price;
+			k++;
+			//p++;
+			//Price = 0;
+		}*/
+		
+		//k=0;
+		/*for (int j=0; j<menu_items.size(); j++)
+		{
+			if (MenuItemID[j] == menu_items[j].getMenuItemID())
+			{
+				Price = Price + menu_items[j].getMenuItemPrice();
+			}
+			//k++;
+		}*/
+		//ItemPrice[f] = Price;	//make a list for price
+		//cout << OrderID[f];
+		f++;
+		//OrderID.push_back(orders[f].getOrdID());
+		//f++;
+		//OrderDate.push_back(orders[g].getOrdDate());
+		//g++;
+	}
+	
+	for (int i=0; i<f-1; i++)
+	{
+		for (int j=i+1; j<f; j++)
+		{
+			if(orders[j].getOrdDate().getYear() < orders[i].getOrdDate().getYear()) 
+			{
+				before = true;
+			}
+			else if(orders[j].getOrdDate().getYear() == orders[i].getOrdDate().getYear())
+			{
+				if(orders[j].getOrdDate().getMonth() < orders[i].getOrdDate().getMonth()) 
+				{
+					before = true;
+				}
+				else if(orders[j].getOrdDate().getMonth() == orders[i].getOrdDate().getMonth())
+					if (orders[j].getOrdDate().getDay() < orders[i].getOrdDate().getDay()) 
+					{
+						before = true;
+					}
+			}
+			
+			if (before = true)
+			{
+				temp = OrderID[j];
+				OrderID[j] = OrderID[i];
+				OrderID[i] = temp;
+				
+				temp2 = OrderDate[j];
+				OrderDate[j] = OrderDate[i];
+				OrderDate[i] = temp2;
+				
+				//temp3 = ItemPrice[j];
+				//ItemPrice[j] = ItemPrice[i];
+				//ItemPrice[i] = temp3;
+			}
+		}
+	}
+	
+	for (int i=0; i<f; i++)
+	{
+		for (int j=0; j<order_items.size(); j++)
+		{
+			if (OrderID[i] == order_items[j].getOrderItemID())
+			{
+				for (int v=0; v<menu_items.size(); v++)
+				{
+					if (order_items[j].getOrderItemID() == menu_items[v].getMenuItemID())
+					{
+						Price += menu_items[v].getMenuItemPrice();
+					}
+				}
+			}
+		}
+		ItemPrice[i] = Price;
+		//OrderID[f] = orders[f].getOrdID();
+		cout << OrderID[i] << " " << OrderDate[i].getDay() << "-" << OrderDate[i].getMonth() << "-" << OrderDate[i].getYear() << " " << "$" << ItemPrice[i] << endl;
+	}
+}
+
+void Menu::ListItemByPrice() const	//S.X. - C.1b
+{
+	//Supporting variables
+	double priceA, priceB;
+	long double* ItemPrice = new long double[500];
+	int* ItemID = new int[500];
+	int temp;
+	double temp2;
+	int f=0;
+	
+	for (int i=0; i<menu_items.size(); i++)
+	{
+		priceA = 0;
+		ItemID[f] = menu_items[f].getMenuItemID();	//make a list for menu item id
+		for (int j=0; j<order_items.size(); j++)	//find the same menu item id in order item vector
+		{
+			if (ItemID[f] == order_items[j].getOrderItemMenuItemID())
+			{
+				priceA = priceA + menu_items[f].getMenuItemPrice()*order_items[j].getOrderItemProdQty();	//multiple quantity ordered with menu item price
+			}
+		}
+		ItemPrice[f] = priceA;	//make a list for price
+		//cout << ItemID[f] << " " << ItemPrice[f];
+		f++;
+	}
+	
+	//Bubble sorting based on quantity price
+	for (int i=0; i<f; i++)
+	{
+		for (int j=f-1; j>=i; j--)
+		{
+			if (ItemPrice[j] > ItemPrice[j-1])
+			{
+				temp = ItemID[j];
+				ItemID[j] = ItemID[j-1];
+				ItemID[j-1] = temp;
+				
+				temp2 = ItemPrice[j];
+				ItemPrice[j] = ItemPrice[j-1];
+				ItemPrice[j-1] = temp2;
+			}
+		}
+	}
+	for (int i=0; i<f-1; i++)
+	{
+		//OrderID[f] = orders[f].getOrdID();
+		cout << ItemID[i] << " " << "$" << ItemPrice[i] << endl;
+	}
 }
 
 void Menu::displayTop5MenuItems() const 	//L.C., C.2-c
