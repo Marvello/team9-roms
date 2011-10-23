@@ -5,7 +5,6 @@
 #include <string>
 #include <stdexcept>
 #include <vector>
-#include <algorithm>
 //other types
 #include "Category.h"
 #include "Menu_Item.h"
@@ -55,6 +54,8 @@ private:
 	void updateOrderItem(); 				//M.O. B.3a
 	void updateMenuItem();					//L.C. B.3b
 	void updateCategories(); 				//S.X. B.3c
+	void ListOrderByDate() const;			//S.X. C.1a
+	void ListItemByPrice() const;			//S.X. C.1b
 	void displayTop5MenuItems() const;		//L.C. C.2c
 	void displayTopOrderTabPrice() const;	//L.C. C.2d
 	void updateOrder();						//M.O. C.3e
@@ -62,7 +63,8 @@ private:
 	void updateMenuItem2();					//M.O. C.3f
 	void deleteOrder();						//M.O. C.3
 	void deleteMenuItem();					//M.O. C.3
-	
+
+	//vector<struct OrderByDate> orderbydate;
 	vector<Category> categories;
 	vector<Menu_Item> menu_items;
 	vector<Recipe> recipes;

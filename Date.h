@@ -14,6 +14,11 @@ public:
 		m=mm;
 		d=dd;
 	}
+	
+	int getYear() const;
+	int getMonth() const;
+	int getDay() const;
+	//string display() const;
     
 private:
     int   y;

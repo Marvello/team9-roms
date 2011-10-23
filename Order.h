@@ -43,7 +43,15 @@ private:
 	int table_id;
 	Date order_date;	//L.C., A2
 	Time order_time;  //L.C., A2
+	/*
+	struct OrderByDate {
+		int OrderID;
+		Date OrderDate;
+		double OrderPrice;
+	};*/
+	
 };
+
 
 
 #endif //ORDER_H_
