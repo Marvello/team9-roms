@@ -1005,7 +1005,7 @@ void Menu::updateRecipe(int RecipeID)		//M.O. C.3f
 		cin >> temp; //request for user entry Instruction
 		Ins = Ins + " " + temp;
 	}
-	while (Ins.at(Ins.length()-1)== '#');
+	while (Ins.at(Ins.length()-1)!= '#');
 	recipes.push_back(Recipe(RecipeID,ChefName,Instructions(Ins))); //Insert Recipe to Recipes vector
 }
 
@@ -1030,7 +1030,7 @@ void Menu::updateMenuItem2()				//M.O. C.3f
 	cin >> RecID; //request for user entry recipe ID
 	updateRecipe(RecID); //Call the procedure Update Recipe to add new recipe
 	cout << ">>Please enter menu item name : "; 
-	getline (cin,MItemName); ////request for user entry Menu Item Name
+	cin >> MItemName; ////request for user entry Menu Item Name
 	cout << ">>Please enter menu item price : ";
 	cin >> Price; //request for user entry Menu Item Price
 	cout<< ">>Please enter description end with # : " << endl;
@@ -1039,20 +1039,22 @@ void Menu::updateMenuItem2()				//M.O. C.3f
 		cin >> temp; //request for user entry Description into temp description
 		descr = descr + " " + temp; //Adding Description with the temp description
 	}
-	while (descr.at(descr.length()-1)== '#'); // while the description not end by '#'
+	while (descr.at(descr.length()-1)!= '#'); // while the description not end by '#'
 	menu_items.push_back(Menu_Item(MItemID,CatID,RecID,MItemName,Price,Description(descr))); //Insert the MEnu Item into vector
 	cout << "Menu Item has successfully Added" <<endl;
 }
 
 void Menu::updateOrder()					//M.O. C.3e
 {
-	int ServerID;  //Variable that contain user entry Server ID
+	int OrdID;  //Variable that contain user entry Order ID
 	int TableID; //Variable that contain user entry Table ID
 	int DateDD, DateMM, DateYY;  //Variable that contain user entry Date
 	int TimeHH, TimeMM; //Variable that contain user entry Time
 	bool valid = false; //Variable used to check whether the user entry valid or not
 	
 	cout<< ">>Add Order" << endl;
+	cout<< ">>Please enter order ID : ";
+	cin >> Ord; //request for user entry Order ID	
 	cout<< ">>Please enter server ID : ";
 	cin >> ServerID; //request for user entry Server ID
 	cout<< ">>Please enter table ID : ";
@@ -1080,20 +1082,6 @@ void Menu::updateOrder()					//M.O. C.3e
 	while (!valid);  //while the time is invalid
 
 	valid = false;
-	int OrdID = 1;
-	while (!valid)
-	{
-		int i=0;
-		while ((i<orders.size()) and (OrdID==orders[i].getOrdID())) //find Order ID that haven't been used
-		{
-			++i; //increment i
-		}
-		
-		if (i >= orders.size()) //if order id Haven't been used
-			valid = true; //then order id is valid
-		else //else
-			++OrdID; //Increment Order ID
-	}
 	
 	orders.push_back(Order(OrdID,ServerID,TableID,Date(DateDD,DateMM,DateYY),Time(TimeHH,TimeMM))); //Added the new Order into vector
 	cout << ">>NEW order added"<<endl;
@@ -1142,7 +1130,7 @@ void Menu::deleteMenuItem()					//M.O. C.3
 	
 	for (tempIterator = menu_items.begin() ;tempIterator !=menu_items.end() ;++tempIterator) //For every element inside the vector
 	{
-		if (((*tempIterator).getMenuItemID() != MenuItemID) and ((*tempIterator).getMenuItemCatID() != CatagoryID)) {//If The menu item ID and catagory ID is the same with user entry 
+		if (((*tempIterator).getMenuItemID() == MenuItemID) and ((*tempIterator).getMenuItemCatID() == CatagoryID)) {//If The menu item ID and catagory ID is the same with user entry 
 			idx = tempIterator;//Save the position to idx
 			found = true;//And found == true
 		}
