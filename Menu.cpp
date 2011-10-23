@@ -112,28 +112,34 @@ void Menu::update()
 	cout << "Please Select One" << endl;
 	cout << "1. Add new order item to existing order "<< endl;
 	cout << "2. Add new menu item to category from existing recipe "<< endl;
-	cout << "3. Add new categories"<< endl;
-	cout << "4. Delete Orders"<< endl;
-	cout << "5. Delete menu items from catagory"<< endl;
+	cout << "3. Add new categories"<< endl;	
+	cout << "4. Add new menu item to category from existing recipe "<< endl;
+	cout << "5. Add new categories"<< endl;
+	cout << "6. Delete Orders"<< endl;
+	cout << "7. Delete menu items from catagory"<< endl;
 	cout << "0. exit"<< endl;
 	cout << ">>"; 
 	do
 	{
 		cin >> choice;
-		if (not ((1 <= choice) && (choice <= 5)))
+		if (not ((1 <= choice) && (choice <= 7)))
 			cout<< "Invalid input" << endl;
 	}
-	while (not((1 <= choice) && (choice <= 5)));
+	while (not((1 <= choice) && (choice <= 7)));
 	
 	if (choice == 1)
 		updateOrderItem();
 	else if (choice ==2)
 		updateMenuItem();
 	else if (choice ==3)
-		updateCategories();
+		updateCategories();	
 	else if (choice ==4)
-		deleteOrder();
+		updateOrder();
 	else if (choice ==5)
+		updateMenuItem2();
+	else if (choice ==6)
+		deleteOrder();
+	else if (choice ==7)
 		deleteMenuItem();
 }
 
