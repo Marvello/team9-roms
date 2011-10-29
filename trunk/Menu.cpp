@@ -1053,6 +1053,7 @@ void Menu::updateMenuItem2()				//M.O. C.3f
 void Menu::updateOrder()					//M.O. C.3e
 {
 	int OrdID;  //Variable that contain user entry Order ID
+	int ServerID;  //Variable that contain user entry Order ID
 	int TableID; //Variable that contain user entry Table ID
 	int DateDD, DateMM, DateYY;  //Variable that contain user entry Date
 	int TimeHH, TimeMM; //Variable that contain user entry Time
@@ -1060,7 +1061,7 @@ void Menu::updateOrder()					//M.O. C.3e
 	
 	cout<< ">>Add Order" << endl;
 	cout<< ">>Please enter order ID : ";
-	cin >> Ord; //request for user entry Order ID	
+	cin >> OrdID; //request for user entry Order ID	
 	cout<< ">>Please enter server ID : ";
 	cin >> ServerID; //request for user entry Server ID
 	cout<< ">>Please enter table ID : ";
