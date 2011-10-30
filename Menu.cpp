@@ -1153,3 +1153,77 @@ void Menu::deleteMenuItem()					//M.O. C.3
 	else //if Posisition not found
 		cout << "Menu Item ID " << MenuItemID << " from catagory " << CatagoryID << " not found" <<endl; //tell the user order id not found
 }
+
+void Menu::writeCatMenu() const				//M.O. D.1
+{
+	ofstream myfile ("Sample_data/catmenu.dat");
+	if (myfile.is_open())
+	{
+		myfile << categories.size() << endl;
+		for (int i=0; i< categories.size() ; i++)
+		{
+			myfile << categories[i].getCatID() << "\t" << categories[i].getCatName() << endl;
+		}
+
+		myfile << "\n";
+		
+		myfile << menu_items.size() <<endl;
+		for (int i=0; i< menu_items.size() ; i++)
+		{
+			myfile << menu_items[i].getMenuItemID() << "\t" << menu_items[i].getMenuItemCatID()<< "\t" << menu_items[i].getMenuItemRecipeID() << "\t" << menu_items[i].getMenuItemName() << "\t" << menu_items[i].getMenuItemPrice() << "\t" << menu_items[i].getMenuItemDesc() << endl;
+		}
+		myfile.close();
+	}
+}
+
+void Menu::writerecipes() const				//M.O. D.1
+{
+	ofstream myfile("Sample_data/recipes.dat");
+	if (myfile.is_open())
+	{
+		myfile << ingredients.size() << endl;
+		for (int i=0; i<ingredients.size();i++)
+		{
+			myfile << ingredients[i].GetIngID() << "\t" << ingredients[i].GetRecipeID() << "\t" << ingredients[i].GetAmt() << "\t" << ingredients[i].GetUnits() << "\t" << ingredients[i].GetName() << endl;
+		}
+		
+		myfile << "\n";
+
+		myfile << recipes.size() << endl;
+		for (int i=0; i<recipes.size();i++)
+		{
+			myfile << recipes[i].getRecipeID() << "\t" << recipes[i].getRecipeChefName() << "\t" << recipes[i].getRecipeInstr().display() << endl;
+		}		
+		myfile.close();
+	}
+}					
+
+void Menu::writeOrders() const					//M.O. D.1
+{
+	ofstream myfile("Sample_data/orders.dat");
+
+	if (myfile.is_open())
+	{
+		myfile << orders.size() << endl;
+		for (int i=0; i<orders.size();i++)
+		{
+			myfile << orders[i].getOrdID() << "\t" ;
+			myfile << orders[i].getOrdServerID() << "\t";
+			myfile << orders[i].getOrdTableID() << "\t";
+			myfile << orders[i].getOrdDate().getYear() << "\t" << orders[i].getOrdDate().getMonth() << "\t" << orders[i].getOrdDate().getDay() << "\t"; 
+			myfile << orders[i].getOrdTime().getHour() << "\t" << orders[i].getOrdTime().getMinute() << endl;		
+		}
+		
+		myfile << "\n";
+
+		myfile << order_items.size() << endl;
+		for (int i=0; i<order_items.size();i++)
+		{
+			myfile << order_items[i].getOrderItemSeatID() << "\t";
+			myfile << order_items[i].getOrderItemID() << "\t";
+			myfile << order_items[i].getRecipeChefName() << "\t";
+			myfile << order_items[i].getOrderItemProdQty() << endl;
+		}		
+		myfile.close();
+	}
+}

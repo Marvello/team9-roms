@@ -13,6 +13,15 @@ public:
 		h=hh;
 		min=minn;
 	}
+	
+	int getHour() const
+	{
+		return h;
+	}
+	int getMinute() const
+	{
+		return min;
+	}
 
 	//int display() const;
     
