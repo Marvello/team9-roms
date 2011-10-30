@@ -63,7 +63,10 @@ private:
 	void updateMenuItem2();					//M.O. C.3f
 	void deleteOrder();						//M.O. C.3
 	void deleteMenuItem();					//M.O. C.3
-
+	void writeCatMenu() const;				//M.O. D.1
+	void writeOrders() const;				//M.O. D.1
+	void writerecipes() const;				//M.O. D.1
+	
 	//vector<struct OrderByDate> orderbydate;
 	vector<Category> categories;
 	vector<Menu_Item> menu_items;
